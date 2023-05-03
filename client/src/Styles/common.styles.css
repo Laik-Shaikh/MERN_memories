@@ -1,0 +1,38 @@
+.app-bar {
+  border-radius: 15px;
+  margin: 20px 0;
+  display: "flex";
+  flex-direction: "row";
+  justify-content: "center";
+  align-items: "center";
+}
+
+.heading {
+  color: "rgba(0,183,255, 1)";
+}
+
+.logo {
+  margin-left: 15px;
+  height: 60px;
+  margin: 10px;
+  object-fit: contain;
+}
+
+.form {
+  display: 'flex';
+  flex-wrap: 'wrap';
+  justify-content: 'center';
+}
+
+.fileInput {
+  width: 97%;
+  margin: 10px 0;
+}
+
+.btn-submit {
+  margin-bottom: 10px;
+}
+
+.mb-10 {
+  margin-bottom: 20px;
+}
