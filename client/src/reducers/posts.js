@@ -3,13 +3,12 @@
 export default (posts = [], action) => {
     switch (action.type) {
         case "FETCH_ALL":
-            console.log("action", action.payload);
             return action.payload;
         case "CREATE":
-            console.log("prev: ", posts);
-            console.log("again: ", action.payload);
             const data = action.payload
-            return  [ ...posts, data ] ;
+            return  [ ...posts, data ];
+        case "UPDATE":
+            return posts.map((post) => post._id === action.payload._id ? action.payload : post);
         default:
             return posts;
     }

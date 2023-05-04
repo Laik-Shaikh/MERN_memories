@@ -19,9 +19,9 @@
 }
 
 .form {
-  display: 'flex';
-  flex-wrap: 'wrap';
-  justify-content: 'center';
+  display: "flex";
+  flex-wrap: "wrap";
+  justify-content: "center";
 }
 
 .fileInput {
@@ -35,4 +35,54 @@
 
 .mb-10 {
   margin-bottom: 20px;
+}
+
+.grid-container {
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 15px;
+  height: 100%;
+  position: relative;
+}
+
+.postImage {
+  height: 0;
+  padding-top: 56.25%;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-blend-mode: darken;
+}
+
+.overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+}
+
+.overlay2 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.cardActions {
+  padding: 0 16px 8px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.title {
+  padding: 0 16px;
 }

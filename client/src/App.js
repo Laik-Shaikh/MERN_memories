@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AppBar, Container, Grid, Grow, Typography } from "@mui/material";
 import Posts from "./components/Posts/Posts";
 import Form from "./components/Forms/Form";
@@ -10,9 +10,11 @@ import { getPosts } from "./actions/posts";
 function App() {
   const dispatch = useDispatch();
 
+  const [currentId, setCurrentId] = useState(null);
+
   useEffect(() => {
     dispatch(getPosts());
-  }, [dispatch]);
+  }, [dispatch, currentId]);
 
   return (
     <Container maxWidth="lg">
@@ -36,10 +38,10 @@ function App() {
             spacing={3}
           >
             <Grid item xs={12} sm={7}>
-              <Posts />
+              <Posts setCurrentId={setCurrentId} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <Form />
+              <Form currentId={currentId} setCurrentId={setCurrentId} />
             </Grid>
           </Grid>
         </Container>

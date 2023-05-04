@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Paper, TextField, Button } from "@mui/material";
 import FileBase from "react-file-base64";
 import { styles } from "../../Styles/Styles";
-import { useDispatch } from "react-redux";
-import { createPost } from '../../actions/posts';
+import { useDispatch, useSelector } from "react-redux";
+import { createPost, updatePost } from '../../actions/posts';
 
-const Form = () => {
+const Form = ({ setCurrentId, currentId }) => {
   const dispatch = useDispatch();
+  const post = useSelector((state) => state.posts.find((post) => post._id === currentId));
+
+  useEffect(() => {
+    if(post) setPostData(post);
+  }, [post]);
 
   const [postData, setPostData] = useState({
     creator: "",
@@ -16,12 +21,18 @@ const Form = () => {
     image: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if(currentId) {
+      dispatch(updatePost(currentId, postData))
+    } else {
     dispatch(createPost(postData));
+    }
+    handleClear();
   };
 
   const handleClear = () => {
+    setCurrentId(null);
     setPostData({
       creator: "",
       title: "",
@@ -45,7 +56,7 @@ const Form = () => {
         onSubmit={handleSubmit}
       >
         <Typography sx={styles.mb} variant="h6" textAlign={"center"}>
-          Creating a Memory
+          {currentId ? 'Editing' : "Creating"} a Memory
         </Typography>
         <TextField
           name="creator"
@@ -71,6 +82,8 @@ const Form = () => {
           label="Message"
           sx={styles.mb}
           fullWidth
+          minRows={4}
+          multiline
           value={postData.message}
           onChange={(e) =>
             setPostData({ ...postData, message: e.target.value })
@@ -103,7 +116,7 @@ const Form = () => {
           sx={styles.mb}
           fullWidth
         >
-          Submit
+          {currentId ? "Update" : "Submit"}
         </Button>
         <Button
           variant="contained"
