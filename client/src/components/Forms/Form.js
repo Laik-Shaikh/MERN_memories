@@ -65,6 +65,7 @@ const Form = ({ setCurrentId, currentId }) => {
           fullWidth
           sx={styles.mb}
           value={postData.creator}
+          required
           onChange={(e) => setPostData({ ...postData, creator: e.target.value })}
         />
         <TextField
@@ -72,6 +73,7 @@ const Form = ({ setCurrentId, currentId }) => {
           variant="outlined"
           label="Title"
           fullWidth
+          required
           sx={styles.mb}
           value={postData.title}
           onChange={(e) => setPostData({ ...postData, title: e.target.value })}
@@ -84,6 +86,7 @@ const Form = ({ setCurrentId, currentId }) => {
           fullWidth
           minRows={4}
           multiline
+          required
           value={postData.message}
           onChange={(e) =>
             setPostData({ ...postData, message: e.target.value })
@@ -95,8 +98,9 @@ const Form = ({ setCurrentId, currentId }) => {
           sx={styles.mb}
           label="Tags"
           fullWidth
+          required
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
+          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}
         />
         <div className="fileInput mb-10">
           <FileBase

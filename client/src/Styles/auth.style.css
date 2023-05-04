@@ -1,0 +1,19 @@
+.paper {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.avatar {
+}
+
+.form {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.submit-btn {
+    margin-top: 30px,
+}

@@ -7,8 +7,20 @@
   align-items: "center";
 }
 
+.brandContainer {
+  display: flex;
+  align-items: center;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 400px;
+}
+
 .heading {
   color: "rgba(0,183,255, 1)";
+  padding-left: 10px;
 }
 
 .logo {
@@ -85,4 +97,10 @@
 }
 .title {
   padding: 0 16px;
+}
+
+@media screen and (max-width: 760px) {
+  .grid {
+    flex-direction: column-reverse;
+  }
 }

@@ -41,18 +41,18 @@ const Post = ({ post, setCurrentId }) => {
             {post.tags.map((tag) => `#${tag} `)}
           </Typography>
         </div>
-        <Typography variant='h4' className="title" gutterBottom>
+        <Typography variant='h5' className="title" gutterBottom>
           {post.title}
         </Typography>
         <CardContent>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="body2" color='textSecondary' gutterBottom>
             {post.message.length > 150 ? `${post.message.substr(0, 150)}...` : post.message}
           </Typography>
         </CardContent>
         <CardActions className="cardAction">
           <Button size="small" color="primary">
             <ThumbUpAlt fontSize={"small"} />
-            Like
+            &nbsp; Like &nbsp;
             {post.likes}
           </Button>
           <Button size="small" color="primary">
