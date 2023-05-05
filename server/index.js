@@ -6,6 +6,7 @@ const cors = require('cors');
 // import 
 const connection = require('./db/connection');
 const postRoutes = require("./routes/postRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/posts", postRoutes);
+app.use("/api/auth", userRoutes);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server is listening on ${process.env.PORT}`);

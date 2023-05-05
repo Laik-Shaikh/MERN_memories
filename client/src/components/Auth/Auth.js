@@ -88,7 +88,7 @@ const Auth = () => {
                   // console.log(credentialResponse);
                   const decoded = jwt_decode(credentialResponse.credential);
                   // console.log(decoded);
-                  dispatch({ type: "AUTH", data: decoded });
+                  dispatch({ type: "AUTH", data: { decoded, token: credentialResponse.credential } });
                   navigate('/');
                 }}
                 onError={(error) => {

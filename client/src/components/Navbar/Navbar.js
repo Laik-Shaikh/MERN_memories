@@ -45,13 +45,13 @@ const Navbar = () => {
           <img src="/images/memories.png" className={"logo"} alt="logo" />
         </div>
         <Toolbar className="toolbar">
-          {user ? (
+          {user?.decoded ? (
             <div className={"profile"}>
-              <Avatar alt={user?.name} src={user?.picture}>
-                {user?.name.charAt(0)}
+              <Avatar alt={user?.decoded.name} src={user?.decoded.picture}>
+                {user?.decoded.name.charAt(0)}
               </Avatar>
               <Typography className={"userName"} variant="h6">
-                {user?.name}
+                {user?.decoded.name}
               </Typography>
               <Button
                 variant="contained"
