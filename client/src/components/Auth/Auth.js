@@ -1,3 +1,5 @@
+// ****** for google Auth sub is my user Id  ****** 
+
 import React, { useState, useEffect } from "react";
 import "../../Styles/auth.style.css";
 import {
@@ -14,22 +16,43 @@ import { GoogleLogin, googleLogout } from "@react-oauth/google";
 import jwt_decode from 'jwt-decode';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { signIn, signUp } from "../../actions/user";
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  password: '',
+  confirmPassword: '',
+  email: ''
+}
 
 const Auth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [formData, setFormData] = useState(initialState);
 
-  const handleChange = () => {};
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name] : e.target.value });
+  };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if(isSignUp) {
+      // register...
+      dispatch(signUp(formData, navigate));
+    } else {
+      // login...
+      dispatch(signIn(formData, navigate));
+    }
+  };
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
   const switchMode = () => {
     setIsSignUp((prev) => !prev);
-    handleShowPassword(false);
+    setShowPassword(false);
   };
 
   return (
@@ -86,9 +109,10 @@ const Auth = () => {
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   // console.log(credentialResponse);
-                  const decoded = jwt_decode(credentialResponse.credential);
-                  // console.log(decoded);
-                  dispatch({ type: "AUTH", data: { decoded, token: credentialResponse.credential } });
+                  const user = jwt_decode(credentialResponse.credential);
+                  // console.log(user);
+                  // ****** for google Auth sub is my user Id  ****** //
+                  dispatch({ type: "AUTH", data: { user, token: credentialResponse.credential } });
                   navigate('/');
                 }}
                 onError={(error) => {

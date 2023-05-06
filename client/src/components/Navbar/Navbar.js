@@ -2,6 +2,7 @@ import { AppBar, Avatar, Button, Toolbar, Typography } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { styles } from "../../Styles/Styles";
+import decode from 'jwt-decode';
 import { useDispatch } from "react-redux";
 
 const Navbar = () => {
@@ -15,11 +16,20 @@ const Navbar = () => {
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate('/auth');
+    dispatch({ type: "SignInCard" })
+    navigate('/');
     setUser(null);
   }
 
   useEffect(() => {
+
+    const token = user?.token;
+
+    // JWT EXPIRY 
+    if(token) {
+      const decodedToken = decode(token);
+      if(decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
 
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location])
@@ -45,13 +55,13 @@ const Navbar = () => {
           <img src="/images/memories.png" className={"logo"} alt="logo" />
         </div>
         <Toolbar className="toolbar">
-          {user?.decoded ? (
+          {user?.user ? (
             <div className={"profile"}>
-              <Avatar alt={user?.decoded.name} src={user?.decoded.picture}>
-                {user?.decoded.name.charAt(0)}
+              <Avatar sx={{marginRight: 2}} alt={user?.user.name} src={user?.user.picture}>
+                {user?.user.name.charAt(0)}
               </Avatar>
-              <Typography className={"userName"} variant="h6">
-                {user?.decoded.name}
+              <Typography sx={{marginRight: 2}} className={"userName"} variant="h6">
+                {user?.user.name}
               </Typography>
               <Button
                 variant="contained"

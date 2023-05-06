@@ -23,7 +23,7 @@ exports.signUp = async (req, res) => {
             password: hashPassword
         });
 
-        const token = jwt.sign({ email, id: newUser._id }, process.env.SECRET_KEY, { expiresIn: "1d" });
+        const token = jwt.sign({ email, id: newUser._id }, process.env.SECRET_KEY, { expiresIn: "1h" });
         
         res.status(201).json({ user: newUser, token });
     } catch (error) {
@@ -43,7 +43,7 @@ exports.signIn = async (req, res) => {
 
     if (!isPasswordCorrect) return res.status(400).json({ message: "Incorrect Password." });
 
-    const token = await jwt.sign({ email: user.email, id: user._id }, process.env.SECRET_KEY, { expiresIn: "1d" });
+    const token = await jwt.sign({ email: user.email, id: user._id }, process.env.SECRET_KEY, { expiresIn: "1h" });
 
     res.status(200).json({ user, token });
   } catch (error) {

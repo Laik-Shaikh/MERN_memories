@@ -8,14 +8,46 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import moment from "moment";
 import ThumbUpAlt from "@mui/icons-material/ThumbUpAlt";
+import { useDispatch } from "react-redux";
+import { deletePost, likePost } from "../../../actions/posts";
 
 const Post = ({ post, setCurrentId }) => {
+  const user = JSON.parse(localStorage.getItem("profile"));
 
+  const dispatch = useDispatch();
+
+  const Likes = () => {
+    if (post.likes.length > 0) {
+      return post.likes.find(
+        (like) => like === (user?.user?.sub || user?.user?._id)
+      ) ? (
+        <>
+          <ThumbUpAlt fontSize="small" />
+          &nbsp;
+          {post.likes.length > 2
+            ? `You and ${post.likes.length - 1} others`
+            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+        </>
+      ) : (
+        <>
+          <ThumbUpOffAltIcon fontSize="small" />
+          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+        </>
+      );
+    }
+
+    return (
+      <>
+        <ThumbUpAlt fontSize="small" />
+        &nbsp;Like
+      </>
+    );
+  };
 
   return (
     <>
@@ -26,39 +58,63 @@ const Post = ({ post, setCurrentId }) => {
           title={post.title}
         />
         <div className="overlay">
-          <Typography variant="h6">{post.creator}</Typography>
+          <Typography variant="h6">{post.name}</Typography>
           <Typography variant="body2">
             {moment(post.createdAt).fromNow()}
           </Typography>
         </div>
-        <div className="overlay2">
-          <Button style={{ color: "white" }} onClick={() => setCurrentId(post._id)} size="small">
-            <MoreHorizIcon fontSize="small" />
-          </Button>
-        </div>
+        {(user?.user?._id === post.creator || user?.user?.sub === post.creator) && (
+          <div className="overlay2">
+            <Button
+              style={{ color: "white" }}
+              onClick={() => setCurrentId(post._id)}
+              size="small"
+            >
+              <MoreHorizIcon fontSize="small" />
+            </Button>
+          </div>
+        )}
         <div className="details">
           <Typography variant="body2" color="textSecondary">
             {post.tags.map((tag) => `#${tag} `)}
           </Typography>
         </div>
-        <Typography variant='h5' className="title" gutterBottom>
+        <Typography variant="h5" className="title" gutterBottom>
           {post.title}
         </Typography>
         <CardContent>
-          <Typography variant="body2" color='textSecondary' gutterBottom>
-            {post.message.length > 150 ? `${post.message.substr(0, 150)}...` : post.message}
+          <Typography variant="body2" color="textSecondary" gutterBottom>
+            {post.message.length > 150
+              ? `${post.message.substr(0, 150)}...`
+              : post.message}
           </Typography>
         </CardContent>
-        <CardActions className="cardAction">
-          <Button size="small" color="primary">
-            <ThumbUpAlt fontSize={"small"} />
-            &nbsp; Like &nbsp;
-            {post.likes}
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "0 16px 8px 16px",
+          }}
+        >
+          <Button
+            onClick={() => dispatch(likePost(post._id))}
+            size="small"
+            color="primary"
+            disabled={!user?.user}
+          >
+            <Likes />
           </Button>
-          <Button size="small" color="primary">
-            <DeleteIcon fontSize={"small"} />
-            Delete
-          </Button>
+          {(user?.user?._id === post.creator ||
+            user?.user?.sub === post.creator) && (
+            <Button
+              onClick={() => dispatch(deletePost(post._id))}
+              size="small"
+              color="primary"
+            >
+              <DeleteIcon fontSize={"small"} />
+              Delete
+            </Button>
+          )}
         </CardActions>
       </Card>
     </>

@@ -11,9 +11,9 @@ exports.getAllPosts = async (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
-  const { title, message, image, creator, tags } = req.body;
+  const { title, message, image, tags, name } = req.body;
   try {
-    const newPost = new PostMessage({ title, message, image, creator, tags });
+    const newPost = new PostMessage({ title, message, name, image, creator: req.userId, tags });
     await newPost.save();
     res.status(201).json(newPost);
   } catch (error) {
@@ -24,13 +24,13 @@ exports.createPost = async (req, res) => {
 exports.updatePost = async (req, res) => {
   // id: _id  => renaming id to _id.
   const { id: _id } = req.params;
-  const { title, message, image, creator, tags } = req.body;
+  const { title, message, image, tags } = req.body;
 
   if (!mongoose.isValidObjectId(_id))
     return res.status(404).json({ error: "No Post is found by this Id." });
 
   try {
-    const updatePost = { title, message, image, creator, tags, _id };
+    const updatePost = { title, message, image, tags, _id };
     const updatedPost = await PostMessage.findByIdAndUpdate(_id, updatePost, {
       new: true,
     });
