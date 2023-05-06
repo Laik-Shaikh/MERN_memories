@@ -22,7 +22,7 @@ app.use(express.json({limit: '30mb'}));
 app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 
 app.get("/", (req, res) => {
-  res.send("Hello Server");
+  res.send("Hello Server!");
 });
 
 app.use("/api/posts", postRoutes);
