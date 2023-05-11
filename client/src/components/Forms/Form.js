@@ -3,16 +3,20 @@ import { Typography, Paper, TextField, Button } from "@mui/material";
 import FileBase from "react-file-base64";
 import { styles } from "../../Styles/Styles";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, updatePost } from '../../actions/posts';
+import { createPost, updatePost } from "../../actions/posts";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const Form = ({ setCurrentId, currentId }) => {
   const dispatch = useDispatch();
-  const post = useSelector((state) => state.posts.find((post) => post._id === currentId));
-  const user = JSON.parse(localStorage.getItem('profile'));
+  const post = useSelector((state) =>
+    state.posts.find((post) => post._id === currentId)
+  );
+  const user = JSON.parse(localStorage.getItem("profile"));
   const showSignInCard = useSelector((state) => state.handleState);
 
   useEffect(() => {
-    if(post) setPostData(post);
+    if (post) setPostData(post);
   }, [post]);
 
   const [postData, setPostData] = useState({
@@ -24,12 +28,17 @@ const Form = ({ setCurrentId, currentId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(currentId) {
-      dispatch(updatePost(currentId, { ...postData, name: user?.user?.name }))
+    if(postData.image && postData.message && postData.title ) {
+      if (currentId) {
+        dispatch(updatePost(currentId, { ...postData, name: user?.user?.name }));
+      } else {
+        dispatch(createPost({ ...postData, name: user?.user?.name }));
+      }
+      handleClear();
+      onAddOrUpdatePost();
     } else {
-    dispatch(createPost({ ...postData, name: user?.user?.name }));
+      alert("Please Fill All The Required Fields.")
     }
-    handleClear();
   };
 
   const handleClear = () => {
@@ -40,12 +49,18 @@ const Form = ({ setCurrentId, currentId }) => {
       tags: "",
       image: "",
     });
-  }; 
+  };
 
+  const onAddOrUpdatePost = () => {
+    toast(<div>Post Was {currentId ? "Updated" : "Added"} Successfully</div>, {
+      position: "top-center",
+      autoClose: 3000,
+    });
+  };
 
-  if ((!user?.user?.name) || showSignInCard) {
+  if (!user?.user?.name || showSignInCard) {
     return (
-      <Paper className='paper'>
+      <Paper className="paper">
         <Typography variant="h6" align="center">
           Please Sign In to create your own memories and like other's memories.
         </Typography>
@@ -67,7 +82,7 @@ const Form = ({ setCurrentId, currentId }) => {
         onSubmit={handleSubmit}
       >
         <Typography sx={styles.mb} variant="h6" textAlign={"center"}>
-          {currentId ? 'Editing' : "Creating"} a Memory
+          {currentId ? "Editing" : "Creating"} a Memory
         </Typography>
         <TextField
           name="title"
@@ -101,15 +116,15 @@ const Form = ({ setCurrentId, currentId }) => {
           fullWidth
           required
           value={postData.tags}
-          onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })}
+          onChange={(e) =>
+            setPostData({ ...postData, tags: e.target.value.split(",") })
+          }
         />
         <div className="fileInput mb-10">
           <FileBase
             type="file"
             multiple={false}
-            onDone={({ base64 }) =>
-              setPostData({ ...postData, image: base64 })
-            }
+            onDone={({ base64 }) => setPostData({ ...postData, image: base64 })}
           />
         </div>
         <Button
@@ -134,6 +149,14 @@ const Form = ({ setCurrentId, currentId }) => {
           Clear
         </Button>
       </form>
+
+      <ToastContainer
+        position="top-center"
+        hideProgressBar
+        newestOnTop={false}
+        rtl={false}
+        closeButton={false}
+      />
     </Paper>
   );
 };
