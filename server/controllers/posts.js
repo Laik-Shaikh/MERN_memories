@@ -2,13 +2,32 @@ const mongoose = require("mongoose");
 const PostMessage = require("../models/postMessage");
 
 exports.getAllPosts = async (req, res) => {
+  const { page } = req.query;
   try {
-    const posts = await PostMessage.find();
-    res.status(200).json({ posts });
+    const LIMIT = 8;
+    // get the start index of current page or 
+    // skip all previous pages records.
+    const startIndex = (Number(page) - 1) * LIMIT; 
+    const totalPosts = await PostMessage.countDocuments({});
+    // sort({ _id: -1 }) => get Latest/Newest Posts
+    const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+    res.status(200).json({ posts, currentPage: Number(page), totalPages: Math.ceil(totalPosts/LIMIT) });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
+
+exports.getPostsBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+  try {
+    const title = new RegExp(searchQuery, 'i');
+
+    const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ] });
+    res.status(200).json({ posts });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
 
 exports.createPost = async (req, res) => {
   const { title, message, image, tags, name } = req.body;

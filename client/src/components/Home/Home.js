@@ -4,9 +4,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Form from "../Forms/Form";
 import Posts from "../Posts/Posts";
 import { useDispatch } from "react-redux";
-import { getPosts } from "../../actions/posts";
 import Paginate from "../Pagination/Pagination";
-import { MuiChipsInput } from 'mui-chips-input'
+import { MuiChipsInput } from 'mui-chips-input';
+import { getPostsBySearch } from '../../actions/posts';
 
 
 function useQuery() {
@@ -23,13 +23,23 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
 
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch, currentId]);
+  // useEffect(() => {
+  //   dispatch(getPosts());
+  // }, [dispatch, currentId]);
 
   const handleSearch = (e) => {
     if(e.keyCode===13) {
       // search posts
+      searchPosts();
+    }
+  }
+
+  const searchPosts = () => {
+    if(search.trim() || tags) {
+      dispatch(getPostsBySearch({ search, tags: tags.join(',') }));
+      navigate(`/posts/search?searchQuery=${search || 'none'}&tags=${tags.join(',')}`);
+    } else {
+      navigate('/');
     }
   }
 
@@ -79,10 +89,18 @@ const Home = () => {
                   label="Search Tags"
                   variant="outlined"
                 />
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={searchPosts}
+                >
+                  Search
+                </Button>
               </AppBar>
               <Form currentId={currentId} setCurrentId={setCurrentId} />
               <Paper className="pagination" elevation={6}>
-                <Paginate />
+                <Paginate page={page} />
               </Paper>
             </Grid>
           </Grid>

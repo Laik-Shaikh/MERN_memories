@@ -43,7 +43,7 @@ const Post = ({ post, setCurrentId }) => {
 
     return (
       <>
-        <ThumbUpAlt fontSize="small" />
+        <ThumbUpOffAltIcon fontSize="small" />
         &nbsp;Like
       </>
     );
@@ -51,7 +51,7 @@ const Post = ({ post, setCurrentId }) => {
 
   return (
     <>
-      <Card className="card">
+      <Card className="card" raised elevation={6}>
         <CardMedia
           className="postImage"
           image={post.image}
@@ -69,6 +69,7 @@ const Post = ({ post, setCurrentId }) => {
               style={{ color: "white" }}
               onClick={() => setCurrentId(post._id)}
               size="small"
+              sx={{ top: -15, right: -30 }}
             >
               <MoreHorizIcon fontSize="small" />
             </Button>
@@ -84,8 +85,8 @@ const Post = ({ post, setCurrentId }) => {
         </Typography>
         <CardContent>
           <Typography variant="body2" color="textSecondary" gutterBottom>
-            {post.message.length > 150
-              ? `${post.message.substr(0, 150)}...`
+            {post.message.length > 120
+              ? `${post.message.substr(0, 120)}...`
               : post.message}
           </Typography>
         </CardContent>

@@ -10,7 +10,7 @@ import { toast, ToastContainer } from "react-toastify";
 const Form = ({ setCurrentId, currentId }) => {
   const dispatch = useDispatch();
   const post = useSelector((state) =>
-    state.posts.find((post) => post._id === currentId)
+    state.posts.posts?.find((post) => post._id === currentId)
   );
   const user = JSON.parse(localStorage.getItem("profile"));
   const showSignInCard = useSelector((state) => state.handleState);
@@ -28,16 +28,18 @@ const Form = ({ setCurrentId, currentId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(postData.image && postData.message && postData.title ) {
+    if (postData.image && postData.message && postData.title) {
       if (currentId) {
-        dispatch(updatePost(currentId, { ...postData, name: user?.user?.name }));
+        dispatch(
+          updatePost(currentId, { ...postData, name: user?.user?.name })
+        );
       } else {
         dispatch(createPost({ ...postData, name: user?.user?.name }));
       }
       handleClear();
       onAddOrUpdatePost();
     } else {
-      alert("Please Fill All The Required Fields.")
+      alert("Please Fill All The Required Fields.");
     }
   };
 
@@ -60,7 +62,7 @@ const Form = ({ setCurrentId, currentId }) => {
 
   if (!user?.user?.name || showSignInCard) {
     return (
-      <Paper className="paper">
+      <Paper elevation={6} className="paper">
         <Typography variant="h6" align="center">
           Please Sign In to create your own memories and like other's memories.
         </Typography>

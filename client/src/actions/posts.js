@@ -3,10 +3,10 @@ import * as api from "../api/api";
 // action creators:  actions are the function that returns a function(redux thunk) in case of asynchronous api call.
 // action creator must have two property => 1. type and 2. payload
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
   try {
-    const { data } = await api.fetchPost();
-    dispatch({ type: "FETCH_ALL", payload: data.posts });
+    const { data } = await api.fetchPost(page);
+    dispatch({ type: "FETCH_ALL", payload: data });
   } catch (error) {
     console.log(error);
   }
@@ -20,6 +20,16 @@ export const createPost = (newPost) => async (dispatch) => {
     } catch (error) {
         console.log(error.message);
     }
+}
+
+export const getPostsBySearch = (searchQuery) => async (dispatch) => {
+  try {
+    const { data } = await api.getPostsBySearch(searchQuery);
+    dispatch({ type: "FETCH_BY_SEARCH", payload: data.posts });
+    console.log(data);
+  } catch (error) {
+    console.log(error.message);
+  }
 }
 
 export const updatePost = (id, updatePost) => async (dispatch) => {
