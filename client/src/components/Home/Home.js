@@ -23,9 +23,6 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
 
-  // useEffect(() => {
-  //   dispatch(getPosts());
-  // }, [dispatch, currentId]);
 
   const handleSearch = (e) => {
     if(e.keyCode===13) {
@@ -94,7 +91,14 @@ const Home = () => {
                   variant="contained"
                   color="primary"
                   onClick={searchPosts}
+                  sx={{
+                    backgroundColor: "black",
+                    "&:hover": {
+                      backgroundColor: "#393646",
+                    },
+                  }}
                 >
+                
                   Search
                 </Button>
               </AppBar>

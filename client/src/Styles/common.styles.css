@@ -27,15 +27,16 @@
 }
 
 .heading {
-  color: rgba(0,183,255, 1);
-  padding-left: 10px;
+  color: #393646;
+  padding-left: 15px;
 }
 
 .logo {
   margin-left: 15px;
-  height: 60px;
-  margin: 10px;
+  height: 45px;
+ 
   object-fit: contain;
+  padding-left: 20px;
 }
 
 .form {
@@ -113,6 +114,20 @@
   border-radius: 4;
   margin-top: 1rem;
   padding: 16px;
+}
+
+.noPostContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  gap: 30px;
+}
+
+.noPostLogo {
+  height: 200px;
+  object-fit: contain;
 }
 
 @media screen and (max-width: 760px) {

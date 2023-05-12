@@ -76,6 +76,7 @@ const Form = ({ setCurrentId, currentId }) => {
         padding: 2,
       }}
       className="paper"
+      elevation={6}
     >
       <form
         autoComplete="off"
@@ -132,10 +133,11 @@ const Form = ({ setCurrentId, currentId }) => {
         <Button
           className="btn-submit"
           variant="contained"
-          color="primary"
+          sx={{ backgroundColor: "black", marginBottom: 2, "&:hover": {
+            backgroundColor: "#393646",
+          }, }}
           size="large"
           type="submit"
-          sx={styles.mb}
           fullWidth
         >
           {currentId ? "Update" : "Submit"}
@@ -146,7 +148,12 @@ const Form = ({ setCurrentId, currentId }) => {
           size="small"
           onClick={handleClear}
           fullWidth
-          sx={{ backgroundColor: "red" }}
+          sx={{
+            backgroundColor: "grey",
+            "&:hover": {
+              backgroundColor: "GrayText",
+            },
+          }}
         >
           Clear
         </Button>

@@ -17,8 +17,19 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
+exports.getPostById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await PostMessage.findById({ _id: id });
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+}
+
 exports.getPostsBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
+  console.log(tags.split(','));
   try {
     const title = new RegExp(searchQuery, 'i');
 

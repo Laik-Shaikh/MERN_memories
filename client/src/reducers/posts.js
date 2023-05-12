@@ -1,9 +1,15 @@
 // posts => state
 
-export default (posts = {}, action) => {
+export default (posts = { isLoading: false, posts: [] }, action) => {
     switch (action.type) {
+        case "START_LOADING":
+            return { ...posts, isLoading: true };
+        case "END_LOADING":
+            return { ...posts, isLoading: false };
         case "FETCH_ALL":
-            return {posts: action.payload?.posts, currentPage: action.payload?.currentPage, totalPages: action.payload?.totalPages};
+            return { ...posts, posts: action.payload?.posts, currentPage: action.payload?.currentPage, totalPages: action.payload?.totalPages };
+        case "GET_POST":
+            return { ...posts, post: action.payload }
         case "FETCH_BY_SEARCH":
             return { ...posts, posts: action.payload };
         case "CREATE":

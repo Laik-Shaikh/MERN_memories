@@ -8,10 +8,12 @@ const {
   likePost,
   deletePost,
   getPostsBySearch,
+  getPostById,
 } = require("../controllers/posts");
 const { authorizeUser } = require("../middleware/authorization");
 
 router.get("/", getAllPosts);
+router.get("/:id", getPostById);
 router.get("/search", getPostsBySearch);
 router.post("/createPost", authorizeUser, createPost);
 router.patch("/updatePost/:id", authorizeUser, updatePost);

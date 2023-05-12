@@ -5,8 +5,10 @@ import * as api from "../api/api";
 
 export const getPosts = (page) => async (dispatch) => {
   try {
+    dispatch({ type: "START_LOADING" });
     const { data } = await api.fetchPost(page);
     dispatch({ type: "FETCH_ALL", payload: data });
+    dispatch({ type: "END_LOADING" });
   } catch (error) {
     console.log(error);
   }
@@ -22,11 +24,23 @@ export const createPost = (newPost) => async (dispatch) => {
     }
 }
 
+export const getSinglePost = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: "START_LOADING" });
+    const { data } = await api.getSinglePost(id);
+    dispatch({ type: "GET_POST", payload: data });
+    dispatch({ type: "END_LOADING" });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   try {
+    dispatch({ type: "START_LOADING" });
     const { data } = await api.getPostsBySearch(searchQuery);
     dispatch({ type: "FETCH_BY_SEARCH", payload: data.posts });
-    console.log(data);
+    dispatch({ type: "END_LOADING" });
   } catch (error) {
     console.log(error.message);
   }

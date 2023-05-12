@@ -7,6 +7,7 @@ import {
   CardMedia,
   Button,
   Typography,
+  ButtonBase,
 } from "@mui/material";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,11 +16,15 @@ import moment from "moment";
 import ThumbUpAlt from "@mui/icons-material/ThumbUpAlt";
 import { useDispatch } from "react-redux";
 import { deletePost, likePost } from "../../../actions/posts";
+import { useNavigate } from "react-router-dom";
 
 const Post = ({ post, setCurrentId }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const openPost = () => navigate(`/posts/${post._id}`);
 
   const Likes = () => {
     if (post.likes.length > 0) {
@@ -56,14 +61,21 @@ const Post = ({ post, setCurrentId }) => {
           className="postImage"
           image={post.image}
           title={post.title}
+          sx={{ cursor: "pointer" }}
+          onClick={() => openPost()}
         />
-        <div className="overlay">
+        <div
+          style={{ cursor: "pointer" }}
+          className="overlay"
+          onClick={() => openPost()}
+        >
           <Typography variant="h6">{post.name}</Typography>
           <Typography variant="body2">
             {moment(post.createdAt).fromNow()}
           </Typography>
         </div>
-        {(user?.user?._id === post.creator || user?.user?.sub === post.creator) && (
+        {(user?.user?._id === post.creator ||
+          user?.user?.sub === post.creator) && (
           <div className="overlay2">
             <Button
               style={{ color: "white" }}
