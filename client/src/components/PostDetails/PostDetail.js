@@ -22,7 +22,9 @@ const PostDetail = () => {
     );
   }, [post]);
 
-  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
+  console.log(post);
+
+  const recommendedPosts = posts.filter(({ _id }) => _id !== post?._id);
 
   const openPost = (id) => navigate(`/posts/${id}`);
 

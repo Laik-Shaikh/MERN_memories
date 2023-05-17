@@ -13,7 +13,7 @@ const {
 const { authorizeUser } = require("../middleware/authorization");
 
 router.get("/", getAllPosts);
-router.get("/:id", getPostById);
+router.get("/getPostById/:id", getPostById);
 router.get("/search", getPostsBySearch);
 router.post("/createPost", authorizeUser, createPost);
 router.patch("/updatePost/:id", authorizeUser, updatePost);

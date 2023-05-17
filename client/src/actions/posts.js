@@ -28,6 +28,7 @@ export const getSinglePost = (id) => async (dispatch) => {
   try {
     dispatch({ type: "START_LOADING" });
     const { data } = await api.getSinglePost(id);
+    console.log(data)
     dispatch({ type: "GET_POST", payload: data });
     dispatch({ type: "END_LOADING" });
   } catch (error) {
