@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPostsBySearch, getSinglePost } from "../../actions/posts";
+import Comments from "./Comments";
 
 const PostDetail = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
@@ -71,12 +72,12 @@ const PostDetail = () => {
             {moment(post.createdAt).fromNow()}
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
+          {/* <Typography variant="body1">
             <strong>Realtime Chat - coming soon!</strong>
           </Typography>
-          <Divider style={{ margin: "20px 0" }} />
+          <Divider style={{ margin: "20px 0" }} /> */}
           <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
+            <Comments post={post}/>
           </Typography>
           <Divider style={{ margin: "20px 0" }} />
         </div>
@@ -106,18 +107,18 @@ const PostDetail = () => {
                   key={_id}
                 >
                   <Typography gutterBottom variant="h6">
-                    {title}
+                    <strong>{title}</strong>
                   </Typography>
                   <Typography gutterBottom variant="subtitle2">
                     {name}
                   </Typography>
                   <Typography gutterBottom variant="subtitle2">
-                    {message}
+                    {message.length > 120 ? `${message.substr(0, 120)}...` : message}
                   </Typography>
                   <Typography gutterBottom variant="subtitle1">
-                    Likes: {likes.length}
+                    Likes: <strong>{likes.length}</strong>
                   </Typography>
-                  <img src={image} width="200px" />
+                  <img src={image} style={{ objectFit:"contain", width:"200px", height:"200px" }}  />
                 </div>
               )
             )}

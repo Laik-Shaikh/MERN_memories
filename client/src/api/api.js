@@ -34,6 +34,8 @@ export const updatePost = (id, updatePost) =>
 
 export const likePost = (id) => API.put(`/api/posts/likePost/${id}`);
 
+export const addComment = (comment, id) => API.put(`/api/posts/addComment/${id}`, {comment});
+
 export const deletePost = (id) => API.delete(`/api/posts//deletePost/${id}`);
 
 // Auth API

@@ -29,6 +29,26 @@
     display: flex;
 }
 
+.comments-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.comments-view {
+    width: 50%;
+    padding: 10px;
+    /* height: 200px, */
+    height: 200px;
+    overflow-y: auto;
+    margin-right: 30px;
+}
+
+.add-comments {
+    width: 50%;
+}
+
+
 @media (max-width: 780px) {
     .card {
         flex-wrap: wrap !important;

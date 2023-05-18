@@ -18,6 +18,8 @@ export default (posts = { isLoading: false, posts: [] }, action) => {
             return { ...posts, posts: posts.posts.map((post) => post._id === action.payload._id ? action.payload : post) };
         case "LIKE":
             return { ...posts, posts: posts.posts.map((post) => post._id === action.payload._id ? action.payload : post) };
+        case "ADD_COMMENT":
+            return { ...posts, posts: posts.posts.map((post) => post._id === action.payload._id ? action.payload : post) };
         case "DELETE":
             return { ...posts, posts: posts.posts.filter((post) => post._id !== action.payload) };
         default:

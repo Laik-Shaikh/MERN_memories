@@ -5,13 +5,20 @@ exports.getAllPosts = async (req, res) => {
   const { page } = req.query;
   try {
     const LIMIT = 8;
-    // get the start index of current page or 
+    // get the start index of current page or
     // skip all previous pages records.
-    const startIndex = (Number(page) - 1) * LIMIT; 
+    const startIndex = (Number(page) - 1) * LIMIT;
     const totalPosts = await PostMessage.countDocuments({});
     // sort({ _id: -1 }) => get Latest/Newest Posts
-    const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
-    res.status(200).json({ posts, currentPage: Number(page), totalPages: Math.ceil(totalPosts/LIMIT) });
+    const posts = await PostMessage.find()
+      .sort({ _id: -1 })
+      .limit(LIMIT)
+      .skip(startIndex);
+    res.status(200).json({
+      posts,
+      currentPage: Number(page),
+      totalPages: Math.ceil(totalPosts / LIMIT),
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -25,24 +32,33 @@ exports.getPostById = async (req, res) => {
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
-}
+};
 
 exports.getPostsBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
   try {
-    const title = new RegExp(searchQuery, 'i');
+    const title = new RegExp(searchQuery, "i");
 
-    const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ] });
+    const posts = await PostMessage.find({
+      $or: [{ title }, { tags: { $in: tags.split(",") } }],
+    });
     res.status(200).json({ posts });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
-}
+};
 
 exports.createPost = async (req, res) => {
   const { title, message, image, tags, name } = req.body;
   try {
-    const newPost = new PostMessage({ title, message, name, image, creator: req.userId, tags });
+    const newPost = new PostMessage({
+      title,
+      message,
+      name,
+      image,
+      creator: req.userId,
+      tags,
+    });
     await newPost.save();
     res.status(201).json(newPost);
   } catch (error) {
@@ -85,6 +101,22 @@ exports.likePost = async (req, res) => {
       post.likes = post.likes.filter((id) => id !== req.userId);
     }
     const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+      new: true,
+    });
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+exports.addComment = async (req, res) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+  try {
+    const post = await PostMessage.findById({ _id: id });
+    if (!post) return res.status(404).json({ message: "No Post Found" });
+    post.comments.push(comment);
+    const updatedPost = await PostMessage.findByIdAndUpdate({ _id: id }, post, {
       new: true,
     });
     res.status(200).json(updatedPost);
